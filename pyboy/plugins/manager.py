@@ -18,6 +18,7 @@ from pyboy.plugins.screenshot_recorder import ScreenshotRecorder # isort:skip
 from pyboy.plugins.game_wrapper_super_mario_land import GameWrapperSuperMarioLand # isort:skip
 from pyboy.plugins.game_wrapper_tetris import GameWrapperTetris # isort:skip
 from pyboy.plugins.game_wrapper_kirby_dream_land import GameWrapperKirbyDreamLand # isort:skip
+from pyboy.plugins.game_wrapper_pkmn_red import GameWrapperPkmnRed # isort:skip
 # imports end
 
 
@@ -37,6 +38,7 @@ def parser_arguments():
     yield GameWrapperSuperMarioLand.argv
     yield GameWrapperTetris.argv
     yield GameWrapperKirbyDreamLand.argv
+    yield GameWrapperPkmnRed.argv
     # yield_plugins end
     pass
 
@@ -74,16 +76,16 @@ class PluginManager:
         self.game_wrapper_tetris_enabled = self.game_wrapper_tetris.enabled()
         self.game_wrapper_kirby_dream_land = GameWrapperKirbyDreamLand(pyboy, mb, pyboy_argv)
         self.game_wrapper_kirby_dream_land_enabled = self.game_wrapper_kirby_dream_land.enabled()
+        self.game_wrapper_pkmn_red = GameWrapperPkmnRed(pyboy, mb, pyboy_argv)
+        self.game_wrapper_pkmn_red_enabled = self.game_wrapper_pkmn_red.enabled()
         # plugins_enabled end
 
     def gamewrapper(self):
         # gamewrapper
-        if self.game_wrapper_super_mario_land_enabled:
-            return self.game_wrapper_super_mario_land
-        if self.game_wrapper_tetris_enabled:
-            return self.game_wrapper_tetris
-        if self.game_wrapper_kirby_dream_land_enabled:
-            return self.game_wrapper_kirby_dream_land
+        if self.game_wrapper_super_mario_land_enabled: return self.game_wrapper_super_mario_land
+        if self.game_wrapper_tetris_enabled: return self.game_wrapper_tetris
+        if self.game_wrapper_kirby_dream_land_enabled: return self.game_wrapper_kirby_dream_land
+        if self.game_wrapper_pkmn_red_enabled: return self.game_wrapper_pkmn_red
         # gamewrapper end
         return None
 
@@ -119,6 +121,8 @@ class PluginManager:
             events = self.game_wrapper_tetris.handle_events(events)
         if self.game_wrapper_kirby_dream_land_enabled:
             events = self.game_wrapper_kirby_dream_land.handle_events(events)
+        if self.game_wrapper_pkmn_red_enabled:
+            events = self.game_wrapper_pkmn_red.handle_events(events)
         # foreach end
         return events
 
@@ -142,6 +146,8 @@ class PluginManager:
             self.game_wrapper_tetris.post_tick()
         if self.game_wrapper_kirby_dream_land_enabled:
             self.game_wrapper_kirby_dream_land.post_tick()
+        if self.game_wrapper_pkmn_red_enabled:
+            self.game_wrapper_pkmn_red.post_tick()
         # foreach end
 
         self._post_tick_windows()
@@ -183,24 +189,19 @@ class PluginManager:
         # foreach windows done = [].frame_limiter(speed), if done: return
         if self.window_sdl2_enabled:
             done = self.window_sdl2.frame_limiter(speed)
-            if done:
-                return
+            if done: return
         if self.window_open_gl_enabled:
             done = self.window_open_gl.frame_limiter(speed)
-            if done:
-                return
+            if done: return
         if self.window_headless_enabled:
             done = self.window_headless.frame_limiter(speed)
-            if done:
-                return
+            if done: return
         if self.window_dummy_enabled:
             done = self.window_dummy.frame_limiter(speed)
-            if done:
-                return
+            if done: return
         if self.debug_enabled:
             done = self.debug.frame_limiter(speed)
-            if done:
-                return
+            if done: return
         # foreach end
 
     def window_title(self):
@@ -236,6 +237,8 @@ class PluginManager:
             title += self.game_wrapper_tetris.window_title()
         if self.game_wrapper_kirby_dream_land_enabled:
             title += self.game_wrapper_kirby_dream_land.window_title()
+        if self.game_wrapper_pkmn_red_enabled:
+            title += self.game_wrapper_pkmn_red.window_title()
         # foreach end
         return title
 
@@ -271,6 +274,8 @@ class PluginManager:
             self.game_wrapper_tetris.stop()
         if self.game_wrapper_kirby_dream_land_enabled:
             self.game_wrapper_kirby_dream_land.stop()
+        if self.game_wrapper_pkmn_red_enabled:
+            self.game_wrapper_pkmn_red.stop()
         # foreach end
         pass
 
