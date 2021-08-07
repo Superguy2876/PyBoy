@@ -53,7 +53,7 @@ class GameWrapperPkmnRed(PyBoyGameWrapper):
     self.shape = (20, 16)
 
     # Current map of player
-    self.map
+    # self.map
 
     self.pokemon_owned = 0
 
@@ -61,7 +61,7 @@ class GameWrapperPkmnRed(PyBoyGameWrapper):
 
     self.fitness = 0
 
-    super().__init__(*args, game_area_section=(0, 2) + self.shape, game_area_wrap_around=True, **kwargs)
+    super().__init__(*args, **kwargs)
     
   #TODO
   # Add functions to set state of the game.
@@ -73,8 +73,8 @@ class GameWrapperPkmnRed(PyBoyGameWrapper):
   #TODO Finish
   # This method will start a new game and give back control on the first frame possible.
   # It will name the player player_name and the rival as rival_name
-  def start_new_game(self, timer_div=None):
-
+  def start_game(self, timer_div=None):
+    
     PyBoyGameWrapper.start_game(self, timer_div=timer_div)
     
     
@@ -83,5 +83,11 @@ class GameWrapperPkmnRed(PyBoyGameWrapper):
 
   def game_area(self):
     return PyBoyGameWrapper.game_area(self)
+  
+  def test_func(self):
+    print('this is a test')
+
+  def post_tick(self):
+    pass
   
   
